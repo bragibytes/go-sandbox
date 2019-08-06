@@ -135,16 +135,12 @@ func (l *List) Clear() {
 // ForEach loops through the list and performs a custom action on each node
 func (l *List) ForEach(f func(*Node)) {
 	if l.head != nil {
-		if l.head.next == nil {
-			f(l.head)
-		} else {
-			x := l.head
-			for x.next != nil {
-				f(x)
-				x = x.next
-			}
+		x := l.head
+		for x.next != nil {
 			f(x)
+			x = x.next
 		}
+		f(x)
 	}
 }
 
