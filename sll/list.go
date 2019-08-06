@@ -24,11 +24,7 @@ func NewList(vals []interface{}) *List {
 
 // Add a node to the list
 func (l *List) Add(val interface{}) {
-	if l.head == nil {
-		l.head = newNode(l.head, val)
-	} else {
-		newNode(l.head, val)
-	}
+	l.head = newNode(l.head, val)
 }
 
 // AddSlice takes a slice of values and adds them to the list
