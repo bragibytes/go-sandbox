@@ -6,9 +6,13 @@ type Node struct {
 	next *Node
 }
 
-func newNode(val interface{}) *Node {
-	return &Node{
-		val,
-		nil,
+func newNode(n *Node, v interface{}) *Node {
+	if n == nil {
+		return &Node{
+			v,
+			nil,
+		}
 	}
+	n.next = newNode(n.next, v)
+	return n
 }

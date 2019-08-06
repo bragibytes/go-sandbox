@@ -4,35 +4,30 @@ import (
 	"fmt"
 )
 
-// List of generic values ( use type assertion on stored values )
+// List : A generic singly linked list
 type List struct {
 	head *Node
 }
 
-// NewList creates and returns a new List. You can provide a starting value, or nil for an empty list
-func NewList(val interface{}) *List {
+// NewList creates and returns a new List. You can provide a starting list of values, or nil for an empty list
+func NewList(vals []interface{}) *List {
 	list := &List{
 		nil,
 	}
 
-	if val != nil {
-		list.head = newNode(val)
+	if vals != nil {
+		list.AddSlice(vals)
 	}
 
 	return list
 }
 
 // Add a node to the list
-func (l *List) Add(Val interface{}) {
-	n := newNode(Val)
+func (l *List) Add(val interface{}) {
 	if l.head == nil {
-		l.head = n
+		l.head = newNode(l.head, val)
 	} else {
-		x := l.head
-		for x.next != nil {
-			x = x.next
-		}
-		x.next = n
+		newNode(l.head, val)
 	}
 }
 
