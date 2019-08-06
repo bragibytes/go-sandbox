@@ -84,16 +84,12 @@ func (l *List) Slice() []interface{} {
 	slice := make([]interface{}, 0)
 
 	if l.head != nil {
-		if l.head.next == nil {
-			slice = append(slice, l.head.Val)
-		} else {
-			x := l.head
-			for x.next != nil {
-				slice = append(slice, x.Val)
-				x = x.next
-			}
+		x := l.head
+		for x.next != nil {
 			slice = append(slice, x.Val)
+			x = x.next
 		}
+		slice = append(slice, x.Val)
 	}
 
 	return slice
@@ -102,19 +98,13 @@ func (l *List) Slice() []interface{} {
 // Contains checks if the list contains the given value
 func (l *List) Contains(Val interface{}) bool {
 	if l.head != nil {
-		if l.head.next == nil {
-			fmt.Printf("Checking if %v is equal to %v\n", Val, l.head.Val)
-			return l.head.Val == Val
-		}
 		x := l.head
 		for x.next != nil {
-			fmt.Printf("Checking if %v is equal to %v\n", Val, x.Val)
 			if x.Val == Val {
 				return true
 			}
 			x = x.next
 		}
-		fmt.Printf("Checking if %v is equal to %v\n", Val, x.Val)
 		if x.Val == Val {
 			return true
 		}
@@ -126,16 +116,12 @@ func (l *List) Contains(Val interface{}) bool {
 // PrintValues prints each value in the list to the console
 func (l *List) PrintValues() {
 	if l.head != nil {
-		if l.head.next == nil {
-			fmt.Println(l.head.Val)
-		} else {
-			x := l.head
-			for x.next != nil {
-				fmt.Println(x.Val)
-				x = x.next
-			}
+		x := l.head
+		for x.next != nil {
 			fmt.Println(x.Val)
+			x = x.next
 		}
+		fmt.Println(x.Val)
 	} else {
 		fmt.Println("List is empty...")
 	}
@@ -146,7 +132,7 @@ func (l *List) Clear() {
 	l.head = nil
 }
 
-// ForEach loops through the list and performs a custom action on each value
+// ForEach loops through the list and performs a custom action on each node
 func (l *List) ForEach(f func(*Node)) {
 	if l.head != nil {
 		if l.head.next == nil {
