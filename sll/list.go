@@ -47,6 +47,7 @@ func (l *List) PopTail() interface{} {
 		}
 		res := x.next.Val
 		x.next = nil
+		l.Len--
 		return res
 	}
 
