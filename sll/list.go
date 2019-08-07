@@ -38,6 +38,7 @@ func (l *List) PopTail() interface{} {
 		if l.head.next == nil {
 			res := l.head.Val
 			l.head = nil
+			l.Len--
 			return res
 		}
 		x := l.head
@@ -57,6 +58,7 @@ func (l *List) PopHead() interface{} {
 	if l.head != nil {
 		res := l.head.Val
 		l.head = l.head.next
+		l.Len--
 		return res
 	}
 	return nil
