@@ -1,9 +1,5 @@
 package sll
 
-import (
-	"fmt"
-)
-
 // List : A generic singly linked list
 type List struct {
 	head *Node
@@ -87,35 +83,14 @@ func (l *List) Slice() []interface{} {
 }
 
 // Contains checks if the list contains the given value
-func (l *List) Contains(Val interface{}) bool {
-	if l.head != nil {
-		x := l.head
-		for x.next != nil {
-			if x.Val == Val {
-				return true
-			}
-			x = x.next
-		}
-		if x.Val == Val {
-			return true
-		}
-	}
-
-	return false
+func (l *List) Contains(val interface{}) bool {
+	node := search(l.head, val)
+	return node != nil
 }
 
 // PrintValues prints each value in the list to the console
 func (l *List) PrintValues() {
-	if l.head != nil {
-		x := l.head
-		for x.next != nil {
-			fmt.Println(x.Val)
-			x = x.next
-		}
-		fmt.Println(x.Val)
-	} else {
-		fmt.Println("List is empty...")
-	}
+	printVals(l.head)
 }
 
 // Clear the list of all nodes
@@ -125,14 +100,7 @@ func (l *List) Clear() {
 
 // ForEach loops through the list and performs a custom action on each node
 func (l *List) ForEach(f func(*Node)) {
-	if l.head != nil {
-		x := l.head
-		for x.next != nil {
-			f(x)
-			x = x.next
-		}
-		f(x)
-	}
+	forEach(l.head, f)
 }
 
 // Reverse the list
@@ -145,4 +113,19 @@ func (l *List) Reverse() {
 		current = next
 	}
 	l.head = prev
+}
+
+// Length returns the number of nodes in the lists
+func (l *List) Length() int {
+	count := 0
+	if l.head != nil {
+		x := l.head
+		for x.next != nil {
+			count++
+			x = x.next
+		}
+		count++
+	}
+
+	return count
 }
