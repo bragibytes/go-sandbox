@@ -3,12 +3,14 @@ package sll
 // List : A generic singly linked list
 type List struct {
 	head *Node
+	Len  int
 }
 
 // NewList creates and returns a new List. You can provide a starting list of values, or nil for an empty list
 func NewList(vals []interface{}) *List {
 	list := &List{
 		nil,
+		0,
 	}
 
 	if vals != nil {
@@ -20,7 +22,7 @@ func NewList(vals []interface{}) *List {
 
 // Add a node to the list
 func (l *List) Add(val interface{}) {
-	l.head = newNode(l.head, val)
+	l.head = newNode(l.head, val, l)
 }
 
 // AddSlice takes a slice of values and adds them to the list
@@ -31,12 +33,12 @@ func (l *List) AddSlice(s []interface{}) {
 }
 
 // PopTail removes the node at the end of the list, and returns its Value ( last in first out )
-func (l *List) PopTail() (interface{}, bool) {
+func (l *List) PopTail() interface{} {
 	if l.head != nil {
 		if l.head.next == nil {
 			res := l.head.Val
 			l.head = nil
-			return res, true
+			return res
 		}
 		x := l.head
 		for x.next.next != nil {
@@ -44,38 +46,27 @@ func (l *List) PopTail() (interface{}, bool) {
 		}
 		res := x.next.Val
 		x.next = nil
-		return res, true
+		return res
 	}
 
-	return nil, false
+	return nil
 }
 
 // PopHead removes the node at the front of the list, and returns its Value ( first in first out )
-func (l *List) PopHead() (interface{}, bool) {
+func (l *List) PopHead() interface{} {
 	if l.head != nil {
-		if l.head.next == nil {
-			res := l.head.Val
-			l.head = nil
-			return res, true
-		}
 		res := l.head.Val
 		l.head = l.head.next
-		return res, true
+		return res
 	}
-
-	return nil, false
+	return nil
 }
 
 // Slice returns the list as a slice
 func (l *List) Slice() []interface{} {
-	slice := make([]interface{}, 0)
+	var slice []interface{}
 
-	if l.head != nil {
-		x := l.head
-		for x.next != nil {
-			slice = append(slice, x.Val)
-			x = x.next
-		}
+	for x := l.head; x != nil; x = x.next {
 		slice = append(slice, x.Val)
 	}
 
@@ -90,7 +81,7 @@ func (l *List) Contains(val interface{}) bool {
 
 // PrintValues prints each value in the list to the console
 func (l *List) PrintValues() {
-	printVals(l.head)
+	printr(l.head)
 }
 
 // Clear the list of all nodes
@@ -100,7 +91,9 @@ func (l *List) Clear() {
 
 // ForEach loops through the list and performs a custom action on each node
 func (l *List) ForEach(f func(*Node)) {
-	forEach(l.head, f)
+	for x := l.head; x != nil; x = x.next {
+		f(x)
+	}
 }
 
 // Reverse the list
@@ -113,19 +106,4 @@ func (l *List) Reverse() {
 		current = next
 	}
 	l.head = prev
-}
-
-// Length returns the number of nodes in the lists
-func (l *List) Length() int {
-	count := 0
-	if l.head != nil {
-		x := l.head
-		for x.next != nil {
-			count++
-			x = x.next
-		}
-		count++
-	}
-
-	return count
 }

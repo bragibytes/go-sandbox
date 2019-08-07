@@ -2,28 +2,30 @@ package sll
 
 import (
 	"fmt"
-	"reflect"
 )
 
 // Node : The Node type
 type Node struct {
 	Val  interface{}
 	next *Node
+	list *List
 }
 
 func (n *Node) print() {
-	fmt.Printf("%v : %v\n", n.Val, reflect.TypeOf(n.Val))
+	fmt.Printf("%v : %T\n", n.Val, n.Val)
 }
 
-// Recursive node functions
-func newNode(n *Node, v interface{}) *Node {
+func newNode(n *Node, v interface{}, l *List) *Node {
 	if n == nil {
+
+		l.Len++
 		return &Node{
 			v,
 			nil,
+			l,
 		}
 	}
-	n.next = newNode(n.next, v)
+	n.next = newNode(n.next, v, l)
 	return n
 }
 
@@ -34,16 +36,9 @@ func search(n *Node, val interface{}) *Node {
 	return search(n.next, val)
 }
 
-func printVals(n *Node) {
+func printr(n *Node) {
 	if n != nil {
 		n.print()
-		printVals(n.next)
-	}
-}
-
-func forEach(n *Node, f func(*Node)) {
-	if n != nil {
-		f(n)
-		forEach(n.next, f)
+		printr(n.next)
 	}
 }
